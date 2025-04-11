@@ -693,7 +693,7 @@ def memdump() :
 root = tkinter.Tk()
 menu = Menu(root)
 root.geometry("1000x692+30+30")
-root.resizable(0,0)
+root.resizable(0,1)
 root.config(menu=menu)
 
 programmenu = Menu(menu)
@@ -703,9 +703,11 @@ programmenu.add_command(label="Load", command=openprogram)
 programmenu.add_command(label="Load additional file", command=openadditionalprogram)
 programmenu.add_command(label="Save as", command=saveprogram)
 programmenu.add_separator()
-programmenu.add_command(label="Assemble", command=assembler)
+programmenu.add_command(label="Assemble", command=assembler, accelerator="Ctrl+A")
 programmenu.add_separator()
 programmenu.add_command(label="Exit", command=root.quit)
+
+root.bind_all("<Control-a>", lambda event: assembler())
 
 machinemenu = Menu(menu)
 menu.add_cascade(label="Machine", menu=machinemenu)
