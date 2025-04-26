@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
 from tkinter import simpledialog
+import webbrowser
 
 #
 # assembler
@@ -690,8 +691,81 @@ def memdump() :
 		mem_dump.insert(END, dump_line)
 		k += 16
 
+def shortcuts() :
+	shortcutwindow = Toplevel(root)
+	shortcutwindow.title("Shortcuts")
+	shortcutwindow.geometry("300x250+300+300")
+	shortcutwindow.resizable(0,0)
+
+	title = Label(shortcutwindow, text="Available Shortcuts", font=("Arial", 12, "bold"))
+	title.pack(pady=10)
+
+	frame = Frame(shortcutwindow)
+	frame.pack(pady=10)
+
+	shortcuts = [
+		("Ctrl+N", "New file"),
+		("Ctrl+O", "Load file"),
+		("Ctrl+Shift+S", "Save file as"),
+		("Ctrl+M", "Assemble"),
+		("Ctrl+R", "Run"),
+		("Ctrl+S", "Step"),
+		("Ctrl+D", "Show memory dump")
+	]
+
+	for key_combination, description in shortcuts:
+		line = f"{key_combination}  :  {description}"
+		label = Label(frame, text=line, anchor="w", font=("Arial", 10))
+		label.pack(anchor="w", padx=10)
+
+def open_link(url) :
+	webbrowser.open(url)
+
+def about() :
+	aboutwindow = Toplevel(root)
+	aboutwindow.title("About")
+	aboutwindow.geometry("300x180+300+300")
+
+	title = Label(aboutwindow, text="About Viking ISA", font=("Arial", 12, "bold"))
+	title.pack(pady=10)
+
+	description = Label(
+		aboutwindow, 
+		text="This is an experimental ISA for a very simple load/store architecture.",
+		font=("Arial", 10),
+		wraplength=250
+		)
+	description.pack(pady=10, padx=10)
+
+	author = Label(aboutwindow, text="Author: Sérgio Johann Filho", font=("Arial", 10))
+	author.pack(pady=10)
+
+	frame = Frame(aboutwindow)  # Create a frame to contain both labels
+	frame.pack(pady=5)  # Add some vertical spacing for the frame
+
+	github = Label(
+		frame, 
+		text="GitHub", 
+		font=("Arial", 10, "underline"), 
+		fg="blue", 
+		cursor="hand2"
+	)
+	github.pack(side=LEFT, padx=10)  # Position GitHub label on the left with padding
+	github.bind("<Button-1>", lambda e: open_link("https://github.com/sjohann81/viking"))
+
+	manual = Label(
+		frame, 
+		text="Manual (Portuguese)", 
+		font=("Arial", 10, "underline"), 
+		fg="blue", 
+		cursor="hand2"
+	)
+	manual.pack(side=LEFT, padx=10)  # Position Manual label next to GitHub with padding
+	manual.bind("<Button-1>", lambda e: open_link("https://github.com/sjohann81/viking/blob/master/manual/viking_manual_pt.pdf"))
+
 root = tkinter.Tk()
 menu = Menu(root)
+root.title("Viking Sim")
 root.geometry("1000x692+30+30")
 root.resizable(0,0)
 root.config(menu=menu)
@@ -726,6 +800,11 @@ machinemenu.add_command(label="Memory dump", command=memdump, accelerator="Ctrl+
 
 root.bind_all("<Control-d>", lambda event: memdump())
 root.bind_all("<Control-s>", lambda event: step())
+
+helpmenu = Menu(menu)
+menu.add_cascade(label="Help", menu=helpmenu)
+helpmenu.add_command(label="Shortcuts", command=shortcuts)
+helpmenu.add_command(label="About", command=about)
 
 topframe = Frame(root)
 topframe.pack()
