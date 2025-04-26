@@ -708,6 +708,7 @@ programmenu.add_separator()
 programmenu.add_command(label="Exit", command=root.quit)
 
 root.bind_all("<Control-m>", lambda event: assembler())
+root.bind_all("<Control-n>", lambda event: newprogram())
 root.bind_all("<Control-o>", lambda event: openprogram())
 root.bind_all("<Control-Shift-S>", lambda event: saveprogram())
 
